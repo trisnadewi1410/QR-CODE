@@ -3,8 +3,8 @@ workflows:
     name: iOS Workflow
     environment:
       ios_signing:
-        distribution_type: app_store
-        bundle_identifier: com.koperasiundiksha.app
+        distribution_type: development
+        bundle_identifier: com.trisnadewi.qrcode
     scripts:
       - name: Set up code signing settings
         script: |
@@ -14,8 +14,7 @@ workflows:
           flutter pub get
       - name: Flutter build ipa
         script: |
-          flutter build ipa --release \
-            --build-number=$(($(app-store-connect get-latest-app-store-build-number "$APP_STORE_ID") + 1))
+          flutter build ipa --release
     artifacts:
       - build/ios/ipa/*.ipa
     publishing:
