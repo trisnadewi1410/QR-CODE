@@ -1,0 +1,25 @@
+workflows:
+  ios-workflow:
+    name: iOS Workflow
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.koperasiundiksha.app
+    scripts:
+      - name: Set up code signing settings
+        script: |
+          keychain initialize
+      - name: Get Flutter packages
+        script: |
+          flutter pub get
+      - name: Flutter build ipa
+        script: |
+          flutter build ipa --release \
+            --build-number=$(($(app-store-connect get-latest-app-store-build-number "$APP_STORE_ID") + 1))
+    artifacts:
+      - build/ios/ipa/*.ipa
+    publishing:
+      app_store_connect:
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID 
